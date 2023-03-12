@@ -20,3 +20,21 @@ logs:
                 job: integrations/node_exporter
       target_config:
         sync_period: 10s
+
+metrics:
+  wal_directory: /tmp/agent
+  global:
+    scrape_interval: 30s
+    remote_write:
+    - url: "{{ grafana_metrics_remote_write_url}}"
+      basic_auth:
+        username: "{{ grafana_metrics_user }}"
+        password: "{{ grafana_api_key }}"
+
+
+integrations:
+  node_exporter:
+    enabled: true
+    rootfs_path: /
+    sysfs_path: /sys
+    procfs_path: /proc

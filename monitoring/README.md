@@ -22,3 +22,11 @@ and then `source .env` prior to running ansible.
 ## run against remotes
 
 `ansible-playbook -i inventory.ini playbook.yaml`
+
+## grafana agent
+
+tail logs
+
+```sh
+sudo journalctl -f -u grafana-agent.service
+```
