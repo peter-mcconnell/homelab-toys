@@ -21,7 +21,7 @@ and then `source .env` prior to running ansible.
 
 ## run against remotes
 
-`ansible-playbook -i ../homelab/inventory.ini playbook.yaml --extra-vars "hosts=remote" -K`
+`ansible-playbook -i ../inventory/homelab.ini playbook.yaml --extra-vars "hosts=remote" -K`
 
 ## grafana agent
 
