@@ -1,0 +1,154 @@
+---
+- name: Install Minecraft
+  hosts: "{{ hosts | default('local') }}"
+  vars:
+    root: "{{ ansible_user_dir }}"
+    server: "{{ root }}/server"
+    build: "{{ root }}/build"
+    http_agent: "ansible-httpget/{{ ansible_version.string }} deploy-minecraft/1.0 (compatible; +https://amaury.carrade.eu/contact)"
+    minecraft_download_url: "https://api.papermc.io/v2/projects/paper/versions/1.19.1/builds/111/downloads/paper-1.19.1-111.jar"
+    minecraft_ram: "12G"
+    motd: "welcome to the minecraft server"
+    max_players: 8
+    gamemode: "survival"
+    enable_command_block: true
+    difficulty: "peaceful"
+    pvp: false
+
+    plugins:
+      - type: spigot
+        name: Chunky
+        spigot_id: 81534
+      - type: spigot
+        name: ProtocolLib
+        spigot_id: 1997
+      - type: spigot
+        name: Ping
+        spigot_id: 72327
+      - type: maven
+        name: SafePortals
+        repo: https://github.com/AmauryCarrade/SafePortals.git
+        branch: master
+      - type: maven
+        name: QuartzSurvivalGames
+        repo: https://github.com/zDevelopers/UHPlugin.git
+        branch: modular
+      - type: link
+        name: WorldEdit
+        link: https://dev.bukkit.org/projects/worldedit/files/4162203/download
+      - type: link
+        name: dynmap
+        link: https://github.com/webbukkit/dynmap/releases/download/v3.1-beta-7/Dynmap-3.1-beta7-spigot.jar
+    ops:
+      - "NephilimSniper"
+
+    startup_commands:
+      - chunky radius 1000
+      - chunky center 0 0
+      - chunky start
+      - dynmap fullrender world
+      - whitelist on
+
+  tasks:
+    - name: install deps
+      become: yes
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - screen
+        - git
+        - maven
+        - jq
+        - default-jre
+    - name: create folders
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "{{ server }}"
+        - "{{ server }}/plugins"
+        - "{{ build }}"
+
+    - name: download latest paper for minecraft https://papermc.io
+      get_url:
+        url: "{{ minecraft_download_url }}"
+        dest: "{{ server }}/paper.jar"
+        http_agent: "{{ http_agent }}"
+
+    - name: accept EULA
+      copy:
+        dest: "{{ server }}/eula.txt"
+        content: |
+          # Accepted by deploy-minecraft ansible playbook
+          eula=true
+
+    - name: generate server properties
+      template:
+        src: "server.properties.j2"
+        dest: "{{ server }}/server.properties"
+
+    - name: install plugins from Spigot
+      include_role:
+        name: install-plugin-spigot
+      vars:
+        plugin_name: "{{ plugin.name }}"
+        spigot_id: "{{ plugin.spigot_id }}"
+      loop: "{{ plugins }}"
+      when: plugin.type == "spigot"
+      loop_control:
+        loop_var: plugin
+ 
+    - name: install plugins from direct link
+      include_role:
+        name: install-plugin-link
+      vars:
+        plugin_name: "{{ plugin.name }}"
+        plugin_link: "{{ plugin.link }}"
+      loop: "{{ plugins }}"
+      when: plugin.type == "link"
+      loop_control:
+        loop_var: plugin
+ 
+    - name: install plugins from Maven build
+      include_role:
+        name: install-plugin-maven
+      vars:
+        plugin_name: "{{ plugin.name }}"
+        plugin_repo: "{{ plugin.repo }}"
+        plugin_branch: "{{ plugin.branch }}"
+      loop: "{{ plugins }}"
+      when: plugin.type == "maven"
+      loop_control:
+        loop_var: plugin
+ 
+    - name: install management scripts
+      copy:
+        src: "{{ item }}"
+        dest: "{{ root }}/"
+        mode: u=rwx,g=rx,o=rx
+      with_fileglob:
+        - templates/*.sh
+  
+    - name: install time-broadcast cron
+      cron:
+        name: Time broadcast
+        special_time: hourly
+        job: cd && ./ ./broadcast_time.sh > {{ root }}/log.log 2>&1
+  
+    - name: start server
+      shell: ./boot_server.sh server {{ minecraft_ram }}
+  
+    - name: add server operators
+      shell: sleep 20 && ./broadcast_command.sh op {{ item }}
+      loop: "{{ ops }}"
+      async: 30
+      poll: 0
+      when: ops is defined
+  
+    - name: execute startup commands
+      shell: sleep 20 && ./broadcast_command.sh {{ item }}
+      loop: "{{ startup_commands }}"
+      async: 30
+      poll: 0
+      when: startup_commands is defined
