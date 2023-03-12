@@ -17,11 +17,11 @@ and then `source .env` prior to running ansible.
 
 ## install locally
 
-`ansible-playbook -i inventory.ini playbook.yaml --extra-vars "variable_host=local" -K`
+`ansible-playbook -i ../inventory/homelab.ini playbook.yaml --extra-vars "variable_host=local" -K`
 
 ## run against remotes
 
-`ansible-playbook -i inventory.ini playbook.yaml`
+`ansible-playbook -i ../homelab/inventory.ini playbook.yaml`
 
 ## grafana agent
 

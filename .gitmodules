@@ -1,3 +1,6 @@
 [submodule ".dotfiles"]
 	path = .dotfiles
 	url = https://github.com/peter-mcconnell/.dotfiles.git
+[submodule "inventory"]
+	path = inventory
+	url = https://github.com/peter-mcconnell/homelab-inventory.git
