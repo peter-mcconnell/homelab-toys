@@ -17,6 +17,10 @@
 
     plugins:
       - type: spigot
+        name: Magic
+        spigot_id: 1056
+        version: 74655
+      - type: spigot
         name: Chunky
         spigot_id: 81534
       - type: spigot

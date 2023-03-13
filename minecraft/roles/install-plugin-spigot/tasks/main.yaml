@@ -1,6 +1,9 @@
 ---
 - name: Download plugin {{ plugin_name }} from Spiget
+  vars:
+    url_version: "{{ '/version/' + version if version is defined else '' }}"
+    url: "https://api.spiget.org/v2/resources/{{ spigot_id }}{{ url_version }}/download"
   get_url:
-    url: https://api.spiget.org/v2/resources/{{ spigot_id }}/download
+    url: "{{ url }}"
     dest: "{{ server }}/plugins/{{ plugin_name | replace(' ', '') }}.jar"
     http_agent: "{{ http_agent }}"
