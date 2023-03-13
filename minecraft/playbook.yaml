@@ -21,28 +21,33 @@
         spigot_id: 1056
         version: 74655
       - type: spigot
+        name: Xray
+        spigot_id: 42228
+      - type: spigot
         name: Chunky
         spigot_id: 81534
       - type: spigot
         name: ProtocolLib
         spigot_id: 1997
       - type: spigot
+        name: LibsDisguises
+        spigot_id: 81
+      - type: spigot
         name: Ping
         spigot_id: 72327
+      - type: spigot
+        name: Dynmap
+        spigot_id: 274
       - type: maven
         name: SafePortals
         repo: https://github.com/AmauryCarrade/SafePortals.git
         branch: master
-      - type: maven
-        name: QuartzSurvivalGames
-        repo: https://github.com/zDevelopers/UHPlugin.git
-        branch: modular
       - type: link
         name: WorldEdit
         link: https://dev.bukkit.org/projects/worldedit/files/4162203/download
       - type: link
-        name: dynmap
-        link: https://github.com/webbukkit/dynmap/releases/download/v3.1-beta-7/Dynmap-3.1-beta7-spigot.jar
+        name: QuartzSurvivalGames
+        repo: https://github.com/zDevelopers/UHPlugin/releases/download/v1.4/UHCReloaded-1.4.jar
     ops:
       - "NephilimSniper"
       - "ilike2makestuff"
