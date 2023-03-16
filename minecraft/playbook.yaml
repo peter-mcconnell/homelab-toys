@@ -21,9 +21,6 @@
         spigot_id: 1056
         version: 74655
       - type: spigot
-        name: Xray
-        spigot_id: 42228
-      - type: spigot
         name: Chunky
         spigot_id: 81534
       - type: spigot
@@ -35,9 +32,6 @@
       - type: spigot
         name: Ping
         spigot_id: 72327
-      - type: spigot
-        name: Dynmap
-        spigot_id: 274
       - type: maven
         name: SafePortals
         repo: https://github.com/AmauryCarrade/SafePortals.git
@@ -46,8 +40,8 @@
         name: WorldEdit
         link: https://dev.bukkit.org/projects/worldedit/files/4162203/download
       - type: link
-        name: QuartzSurvivalGames
-        repo: https://github.com/zDevelopers/UHPlugin/releases/download/v1.4/UHCReloaded-1.4.jar
+        name: Xray
+        link: https://dl4.9minecraft.net/index.php?act=download&id=1665806753&hash=6413879a42229
     ops:
       - "NephilimSniper"
       - "ilike2makestuff"

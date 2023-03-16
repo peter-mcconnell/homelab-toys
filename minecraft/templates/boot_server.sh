@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Starts a Minecraft server. Creates a screen named `zcraft_folder_name` and
 # runs the Minecraft server in it.
@@ -14,6 +14,7 @@ RAM=$2
 
 SCREEN_NAME="zcraft_$FOLDER"
 
+screen -XS $(screen -ls | grep -o -e "[0-9]\+\.$SCREEN_NAME") quit || true
+screen -wipe || true
 screen -dmS $SCREEN_NAME sh
-screen -S $SCREEN_NAME -X stuff "sh ./boot_server_screen.sh $FOLDER $RAM && exit
-"
+screen -S $SCREEN_NAME -X stuff "sh ./boot_server_screen.sh $FOLDER $RAM && exit"
