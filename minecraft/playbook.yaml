@@ -21,6 +21,12 @@
         spigot_id: 1056
         version: 74655
       - type: spigot
+        name: Dynmap
+        spigot_id: 274
+      - type: spigot
+        name: Duels
+        spigot_id: 20171
+      - type: spigot
         name: Chunky
         spigot_id: 81534
       - type: spigot
@@ -39,9 +45,6 @@
       - type: link
         name: WorldEdit
         link: https://dev.bukkit.org/projects/worldedit/files/4162203/download
-      - type: link
-        name: Xray
-        link: https://dl4.9minecraft.net/index.php?act=download&id=1665806753&hash=6413879a42229
     ops:
       - "NephilimSniper"
       - "ilike2makestuff"
